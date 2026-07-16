@@ -1,0 +1,11 @@
+CustomerID,Name,Age,Salary,City
+1,John,25,50000,New York
+2,,30,62000,Dallas
+3,Bob,,55000,Chicago
+4,Emma,35,,Seattle
+5,,40,80000,
+6,Olivia,29,60000,Denver
+7,Liam,,67000,Austin
+8,Sophia,27,,Miami
+9,Noah,33,72000,
+10,Ava,26,54000,Phoenix
