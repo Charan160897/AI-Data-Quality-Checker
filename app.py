@@ -1,13 +1,17 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 
 from src.data_loader import load_csv
 from src.analyzer import (
     get_missing_values,
     get_missing_percentage,
-    get_duplicate_rows
+    get_duplicate_rows,
+    get_summary_statistics,
+    detect_outliers,
+    calculate_quality_score
+
 )
+from src.report_generator import generate_report
 
 # ------------------------------
 # Page Configuration
@@ -114,18 +118,11 @@ if uploaded_file is not None:
 
     st.dataframe(percentage_df)
 
-    # Missing Value Percentage Chart
-    st.subheader("📈 Missing Value Percentage Chart")
-    fig, ax = plt.subplots()
-    ax.bar(
-        percentage_df["Column"],
-        percentage_df["Missing Percentage"]
-    )
-    ax.set_xlabel("Columns")
-    ax.set_ylabel("Percentage")
-    ax.set_title("Missing Value Percentage")
-    plt.xticks(rotation=45)
-    st.pyplot(fig)
+    st.subheader("📊 Missing Values Chart")
+
+    chart_data = percentage_df.set_index("Column")
+
+    st.bar_chart(chart_data)
 
     # Duplicate Rows
     duplicates = get_duplicate_rows(df)
@@ -148,6 +145,56 @@ if uploaded_file is not None:
     st.write(f"Rows : {df.shape[0]}")
     st.write(f"Columns : {df.shape[1]}")
 
+    st.header("📈 Summary Statistics")
+    summary = get_summary_statistics(df)
+    st.dataframe(summary)
+
+    # ====================================
+    # Outlier Detection
+    # ====================================
+
+    st.header("📌 Outlier Detection")
+    outliers = detect_outliers(df)
+
+    outlier_df = pd.DataFrame({
+        "Column": outliers.keys(),
+        "Outliers": outliers.values(),
+    })
+
+    st.dataframe(outlier_df)
+    st.subheader("📊 Outlier Chart")
+
+    outlier_chart = outlier_df.set_index("Column")
+
+    st.bar_chart(outlier_chart)
+
+    score = calculate_quality_score(df)
+    st.header("⭐ Overall Quality Score")
+    st.metric("Quality Score", f"{score}%")
+
+    report = generate_report(
+
+    missing_df,
+
+    percentage_df,
+
+    outlier_df
+
+   )
+
+    csv = report.to_csv(index=False)
+
+    st.download_button(
+
+    label="📥 Download Quality Report",
+
+    data=csv,
+
+    file_name="quality_report.csv",
+
+    mime="text/csv"
+
+)
 # ------------------------------
 # Sidebar
 # ------------------------------
