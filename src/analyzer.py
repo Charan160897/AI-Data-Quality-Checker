@@ -69,3 +69,9 @@ def calculate_quality_score(df):
     score = 100 - missing - duplicates - outliers
 
     return max(score, 0)
+
+def correlation_matrix(df):
+
+    numeric = df.select_dtypes(include="number")
+
+    return numeric.corr()
