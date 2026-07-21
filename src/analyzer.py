@@ -75,3 +75,24 @@ def correlation_matrix(df):
     numeric = df.select_dtypes(include="number")
 
     return numeric.corr()
+def profile_columns(df):
+
+    profile = []
+
+    for column in df.columns:
+
+        profile.append({
+
+            "Column": column,
+
+            "Data Type": str(df[column].dtype),
+
+            "Missing Values": df[column].isnull().sum(),
+
+            "Unique Values": df[column].nunique(),
+
+            "Sample Value": df[column].dropna().iloc[0] if not df[column].dropna().empty else "No Data"
+
+        })
+
+    return pd.DataFrame(profile)

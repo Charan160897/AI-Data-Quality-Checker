@@ -35,3 +35,19 @@ def unique_value_report(df):
     Return unique value count for every column.
     """
     return df.nunique(dropna=False)
+
+def validate_numeric_columns(df):
+
+    issues = []
+
+    numeric = df.select_dtypes(include="number")
+
+    for column in numeric.columns:
+
+        if df[column].min() < 0:
+
+            issues.append(
+                f"{column} contains negative values."
+            )
+
+    return issues
