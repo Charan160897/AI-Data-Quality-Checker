@@ -19,3 +19,6 @@ Date,Rows,Columns,Missing,Duplicates,Quality Score
 2026-07-22 16:45:44.614415,missing_values.csv,10,5,8,0,92
 2026-07-22 16:57:33.739210,customers.csv,10,5,0,0,100
 2026-07-22 16:57:39.950328,missing_values.csv,10,5,8,0,92
+2026-07-22 17:28:37.947418,invalid.csv,4,1,0,0,100
+2026-07-22 17:29:13.951314,duplicates.csv,5,5,0,1,98
+2026-07-22 17:29:47.581052,customers.csv,10,5,0,0,100

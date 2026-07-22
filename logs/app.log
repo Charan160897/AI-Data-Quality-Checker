@@ -358,3 +358,81 @@ Traceback (most recent call last):
   File "pandas/_libs/parsers.pyx", line 2084, in pandas._libs.parsers.raise_parser_error
 pandas.errors.ParserError: Error tokenizing data. C error: Expected 6 fields in line 16, saw 8
 
+2026-07-22 17:28:37,941 - INFO - Dataset uploaded: invalid.csv | rows=4 | columns=1
+2026-07-22 17:28:38,093 - ERROR - Unable to read analysis history.
+Traceback (most recent call last):
+  File "/Users/himabindupandiri/Projects/AI-Data-Quality-Checker/app.py", line 769, in <module>
+    history = pd.read_csv(history_file)
+  File "/Users/himabindupandiri/Projects/AI-Data-Quality-Checker/venv/lib/python3.14/site-packages/pandas/io/parsers/readers.py", line 873, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "/Users/himabindupandiri/Projects/AI-Data-Quality-Checker/venv/lib/python3.14/site-packages/pandas/io/parsers/readers.py", line 306, in _read
+    return parser.read(nrows)
+           ~~~~~~~~~~~^^^^^^^
+  File "/Users/himabindupandiri/Projects/AI-Data-Quality-Checker/venv/lib/python3.14/site-packages/pandas/io/parsers/readers.py", line 1947, in read
+    ) = self._engine.read(  # type: ignore[attr-defined]
+        ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        nrows
+        ^^^^^
+    )
+    ^
+  File "/Users/himabindupandiri/Projects/AI-Data-Quality-Checker/venv/lib/python3.14/site-packages/pandas/io/parsers/c_parser_wrapper.py", line 215, in read
+    chunks = self._reader.read_low_memory(nrows)
+  File "pandas/_libs/parsers.pyx", line 832, in pandas._libs.parsers.TextReader.read_low_memory
+  File "pandas/_libs/parsers.pyx", line 897, in pandas._libs.parsers.TextReader._read_rows
+  File "pandas/_libs/parsers.pyx", line 868, in pandas._libs.parsers.TextReader._tokenize_rows
+  File "pandas/_libs/parsers.pyx", line 885, in pandas._libs.parsers.TextReader._check_tokenize_status
+  File "pandas/_libs/parsers.pyx", line 2084, in pandas._libs.parsers.raise_parser_error
+pandas.errors.ParserError: Error tokenizing data. C error: Expected 6 fields in line 16, saw 8
+
+2026-07-22 17:29:13,936 - INFO - Dataset uploaded: duplicates.csv | rows=5 | columns=5
+2026-07-22 17:29:13,986 - ERROR - Unable to read analysis history.
+Traceback (most recent call last):
+  File "/Users/himabindupandiri/Projects/AI-Data-Quality-Checker/app.py", line 769, in <module>
+    history = pd.read_csv(history_file)
+  File "/Users/himabindupandiri/Projects/AI-Data-Quality-Checker/venv/lib/python3.14/site-packages/pandas/io/parsers/readers.py", line 873, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "/Users/himabindupandiri/Projects/AI-Data-Quality-Checker/venv/lib/python3.14/site-packages/pandas/io/parsers/readers.py", line 306, in _read
+    return parser.read(nrows)
+           ~~~~~~~~~~~^^^^^^^
+  File "/Users/himabindupandiri/Projects/AI-Data-Quality-Checker/venv/lib/python3.14/site-packages/pandas/io/parsers/readers.py", line 1947, in read
+    ) = self._engine.read(  # type: ignore[attr-defined]
+        ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        nrows
+        ^^^^^
+    )
+    ^
+  File "/Users/himabindupandiri/Projects/AI-Data-Quality-Checker/venv/lib/python3.14/site-packages/pandas/io/parsers/c_parser_wrapper.py", line 215, in read
+    chunks = self._reader.read_low_memory(nrows)
+  File "pandas/_libs/parsers.pyx", line 832, in pandas._libs.parsers.TextReader.read_low_memory
+  File "pandas/_libs/parsers.pyx", line 897, in pandas._libs.parsers.TextReader._read_rows
+  File "pandas/_libs/parsers.pyx", line 868, in pandas._libs.parsers.TextReader._tokenize_rows
+  File "pandas/_libs/parsers.pyx", line 885, in pandas._libs.parsers.TextReader._check_tokenize_status
+  File "pandas/_libs/parsers.pyx", line 2084, in pandas._libs.parsers.raise_parser_error
+pandas.errors.ParserError: Error tokenizing data. C error: Expected 6 fields in line 16, saw 8
+
+2026-07-22 17:29:47,567 - INFO - Dataset uploaded: customers.csv | rows=10 | columns=5
+2026-07-22 17:29:47,620 - ERROR - Unable to read analysis history.
+Traceback (most recent call last):
+  File "/Users/himabindupandiri/Projects/AI-Data-Quality-Checker/app.py", line 769, in <module>
+    history = pd.read_csv(history_file)
+  File "/Users/himabindupandiri/Projects/AI-Data-Quality-Checker/venv/lib/python3.14/site-packages/pandas/io/parsers/readers.py", line 873, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "/Users/himabindupandiri/Projects/AI-Data-Quality-Checker/venv/lib/python3.14/site-packages/pandas/io/parsers/readers.py", line 306, in _read
+    return parser.read(nrows)
+           ~~~~~~~~~~~^^^^^^^
+  File "/Users/himabindupandiri/Projects/AI-Data-Quality-Checker/venv/lib/python3.14/site-packages/pandas/io/parsers/readers.py", line 1947, in read
+    ) = self._engine.read(  # type: ignore[attr-defined]
+        ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        nrows
+        ^^^^^
+    )
+    ^
+  File "/Users/himabindupandiri/Projects/AI-Data-Quality-Checker/venv/lib/python3.14/site-packages/pandas/io/parsers/c_parser_wrapper.py", line 215, in read
+    chunks = self._reader.read_low_memory(nrows)
+  File "pandas/_libs/parsers.pyx", line 832, in pandas._libs.parsers.TextReader.read_low_memory
+  File "pandas/_libs/parsers.pyx", line 897, in pandas._libs.parsers.TextReader._read_rows
+  File "pandas/_libs/parsers.pyx", line 868, in pandas._libs.parsers.TextReader._tokenize_rows
+  File "pandas/_libs/parsers.pyx", line 885, in pandas._libs.parsers.TextReader._check_tokenize_status
+  File "pandas/_libs/parsers.pyx", line 2084, in pandas._libs.parsers.raise_parser_error
+pandas.errors.ParserError: Error tokenizing data. C error: Expected 6 fields in line 16, saw 8
+
