@@ -31,6 +31,10 @@ from src.ai_helper import (
     dataset_summary
 )
 from src.logger import logger
+from src.authentication import login
+
+if not login():
+    st.stop()
 
 # ------------------------------
 # Page Configuration
@@ -65,21 +69,42 @@ uploaded_file2 = st.file_uploader(
 # ------------------------------
 
 if uploaded_file is not None:
-    df = load_csv(uploaded_file)
 
-    if df is None:
-        st.error("Unable to read the CSV file.")
+    try:
+        # Load CSV
+        df = load_csv(uploaded_file)
+
+        # Check if loading failed
+        if df is None:
+            st.error("❌ Unable to read the CSV file.")
+            st.stop()
+
+        # Check if CSV is empty
+        if isinstance(df, str) and df == "EMPTY":
+            st.warning("⚠️ CSV file contains no data.")
+            st.stop()
+
+        # Success message
+        st.success("✅ File uploaded successfully!")
+
+        # Log information
+        logger.info("Dataset uploaded successfully.")
+        logger.info(f"Rows: {df.shape[0]}")
+        logger.info(f"Columns: {df.shape[1]}")
+
+    except Exception as e:
+        logger.error(f"Error while loading CSV: {e}")
+
+        st.error(
+            f"""
+            ❌ An unexpected error occurred while loading the dataset.
+
+            Error Details:
+            {e}
+            """
+        )
+
         st.stop()
-
-    if isinstance(df, str) and df == "EMPTY":
-        st.warning("CSV file contains no data.")
-        st.stop()
-
-    st.success("File uploaded successfully!")
-
-    logger.info("Dataset uploaded successfully.")
-    logger.info(f"Rows : {df.shape[0]}")
-    logger.info(f"Columns : {df.shape[1]}")
 
     # ==================================================
     # COMPUTE EVERYTHING NEEDED BY THE TABS UP FRONT
@@ -145,6 +170,51 @@ if uploaded_file is not None:
 
     score = calculate_quality_score(df)
 
+    st.sidebar.header("⚙️ Quality Settings")
+
+    quality_limit = st.sidebar.slider(
+    "Minimum Quality Score",
+    min_value=0,
+    max_value=100,
+    value=80
+    )
+
+    import os
+
+    history_file = "history/analysis_history.csv"
+
+    history_data = pd.DataFrame({
+
+    "Date": [pd.Timestamp.now()],
+
+    "Rows": [df.shape[0]],
+
+    "Columns": [df.shape[1]],
+
+    "Missing": [total_missing],
+
+    "Duplicates": [duplicates],
+
+    "Quality Score": [score]
+
+    })
+
+    if os.path.exists(history_file):
+
+       history_data.to_csv(
+        history_file,
+        mode="a",
+        header=False,
+        index=False
+    )
+
+    else:
+
+       history_data.to_csv(
+        history_file,
+        index=False
+    )
+
     # Build the internal report table (generate_report expects Series/DataFrames
     # aligned on the column-name index, not the reset-index display versions above)
     try:
@@ -174,6 +244,7 @@ if uploaded_file is not None:
     except Exception as e:
         pdf_path = None
         logger.info(f"create_pdf failed: {e}")
+        st.warning(f"Unable to generate PDF report.\n{e}")
 
     # --- Visualization tab ---
     corr = correlation_matrix(df)
@@ -322,10 +393,18 @@ if uploaded_file is not None:
         st.header("⭐ Overall Quality Score")
         st.metric("Quality Score", f"{score}%")
 
-        if score < config.QUALITY_SCORE_WARNING:
-            st.error("⚠ Dataset quality is poor.")
+        # if score < config.QUALITY_SCORE_WARNING:
+        #     st.error("⚠ Dataset quality is poor.")
+        # else:
+        #     st.success("✅ Dataset quality is acceptable.")
+        if score < quality_limit:
+         st.error(
+        f"⚠ Quality Score ({score}%) is below the selected limit ({quality_limit}%)."
+        )
         else:
-            st.success("✅ Dataset quality is acceptable.")
+         st.success(
+        f"✅ Quality Score ({score}%) meets the selected limit."
+       )
 
         st.header("📄 Export Quality Report")
 
@@ -395,6 +474,60 @@ if uploaded_file is not None:
         for item in recommendations:
             st.info(item)
 
+        st.header("🧹 Data Cleaning Preview")
+
+        cleaned_df = df.drop_duplicates()
+
+        cleaned_df = cleaned_df.dropna()
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+          st.metric(
+          "Original Rows",
+          df.shape[0]
+          )
+
+        with col2:
+          st.metric(
+          "Rows After Cleaning",
+           cleaned_df.shape[0]
+      )
+
+        st.subheader("Cleaned Dataset Preview")
+
+        st.dataframe(cleaned_df.head())
+
+        st.header("🔍 Search Columns")
+
+        search = st.text_input(
+           "Search for a column"
+       )
+
+        matching_columns = [
+
+           column
+
+           for column in df.columns
+
+           if search.lower() in column.lower()
+
+       ]
+
+        if search == "":
+
+          st.info("Type a column name above.")
+
+        elif len(matching_columns) == 0:
+
+          st.warning("No matching columns found.")
+
+        else:
+
+         st.success("Matching Columns")
+
+         st.write(matching_columns)
+
         st.header("🤖 AI Insights")
         st.success(ai_summary)
 
@@ -404,11 +537,49 @@ if uploaded_file is not None:
             st.info(item)
 
         st.header("🤖 AI Dataset Summary")
-        st.success(dataset_summary(
-            df.shape[0],
-            df.shape[1],
-            score
-        ))
+        try:
+            ai_dataset_summary_text = dataset_summary(
+                df.shape[0],
+                df.shape[1],
+                score
+            )
+            st.success(ai_dataset_summary_text)
+        except Exception:
+            st.warning(
+                "Unable to generate AI summary."
+            )
+        st.header("📜 Analysis History")
+
+        history = None
+        try:
+            history = pd.read_csv(
+                "history/analysis_history.csv"
+            )
+
+            st.dataframe(history)
+
+        except FileNotFoundError:
+
+            st.info(
+                "No history available yet."
+            )
+
+        st.header("📈 Quality Trend")
+
+        if history is not None:
+            history["Date"] = pd.to_datetime(history["Date"])
+
+            history = history.sort_values("Date")
+
+            trend = history.set_index("Date")
+
+            st.line_chart(
+                trend["Quality Score"]
+            )
+        else:
+            st.info(
+                "No history available yet."
+            )
 
     # ------------------------------
     # Sidebar
