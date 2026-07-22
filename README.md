@@ -2,33 +2,28 @@
 
 ## Overview
 
-AI Data Quality Checker is a Python application built with Streamlit that analyzes CSV datasets and provides detailed quality reports.
-
----
+AI Data Quality Checker is a Streamlit application that analyzes CSV datasets and identifies missing values, duplicate rows, outliers, constant columns, and other data-quality issues.
 
 ## Features
 
-- CSV Upload
-- Missing Value Detection
-- Duplicate Detection
-- Outlier Detection
-- Constant Column Detection
-- Data Type Summary
-- Correlation Matrix
-- Dashboard Metrics
-- AI Dataset Summary
-- Data Cleaning Preview
-- Search Columns
-- Analysis History
-- Quality Trend Chart
-- PDF Report
-- CSV Report
-- Logging
-- Unit Testing
+- CSV upload and preview
+- Missing-value analysis
+- Duplicate detection
+- Outlier detection using IQR
+- Column profiling
+- Constant-column detection
+- Numeric validation
+- Correlation analysis
+- Distribution charts
+- Data-quality score
+- Automated recommendations
+- Cleaning preview
+- Analysis history
+- PDF and CSV report downloads
+- Application logging
+- Unit tests
 
----
-
-## Technologies
+## Tech Stack
 
 - Python
 - Pandas
@@ -36,22 +31,16 @@ AI Data Quality Checker is a Python application built with Streamlit that analyz
 - Matplotlib
 - ReportLab
 - Pytest
-- Git
+- Git and GitHub
 
----
-
-## Installation
+## Run Locally
 
 ```bash
-git clone https://github.com/yourusername/AI-Data-Quality-Checker.git
-
+git clone <repository-url>
 cd AI-Data-Quality-Checker
 
 python3 -m venv venv
-
 source venv/bin/activate
 
 pip install -r requirements.txt
-
 streamlit run app.py
-

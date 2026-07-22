@@ -1,11 +1,27 @@
+# Virtual environments
 venv/
+.venv/
+test_venv/
+
+# Python
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
 .pytest_cache/
-.mypy_cache/
-.ruff_cache/
+
+# Environment variables and secrets
 .env
+.streamlit/secrets.toml
+
+# macOS
 .DS_Store
-reports/
+
+# VS Code
+.vscode/
+
+# Runtime output
+logs/*.log
+reports/*.pdf
+reports/*.csv
+
+# Optional history data
+history/*.csv
